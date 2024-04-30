@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <title>Briefing vol planeur</title>
+    <meta name="description" content="Une collecte automatique de données météo et aéro">
+    <meta name="author" content="Vincent MAILLET">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/sky.css" id="theme">
+    <link rel="stylesheet" href="./plugin/gallery/gallery.css">
+    <link rel="stylesheet" href="./css/brief.css">
+    <script src="./js/jquery.min.js"></script>
+	
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+    <!-- Printing and PDF exports -->
+    <script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+    <!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>		<![endif]-->
+		
+		
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <script>
+                           
+               // On initialise la date du jour pour tout le document
+                    var date = new Date();
+                    var timeSince1970 = date.getTime();
+                    var seconds = date.getUTCSeconds();
+                    var minutes = date.getUTCMinutes();
+                    var hours = date.getUTCHours();
+                    var day = date.getUTCDate();
+                    var month = date.getUTCMonth()+1;
+                    var year = date.getUTCFullYear();
+                    // faisons en sorte que le premier janvier à 8 heures 2 minutes soit 01/01/2016 08:02, et non 1/1/2016 8:2  ;-)
+                    if(hours.toString().length==1){var zero = '0'; hours = zero.concat(hours);}
+                    if(minutes.toString().length==1){var zero = '0'; minutes = zero.concat(minutes);}
+                    if(seconds.toString().length==1){var zero = '0'; seconds = zero.concat(seconds);}
+                    if(month.toString().length==1){var zero = '0'; month = zero.concat(month);}
+                    if(day.toString().length==1){var zero = '0'; day = zero.concat(day);}
+                    var ymd = year.toString().concat(month.toString().concat(day.toString()));
+					var ymd_velivole = year.toString()+'-'+month.toString()+'-'+day.toString();
+
+                    function sleep(miliseconds) {
+                        var currentTime = new Date().getTime();
+                        while (currentTime + miliseconds >= new Date().getTime()) {
+                       }
+                    }
+			    </script>
+        <!-- Premier slide -->
+        <section>
+          <h1>Briefing Vol Planeur</h1>
+          <p><medium>ATVV GRAULHET
+              <script>document.write(day+'/'+month+'/'+year);</script></medium></p>
+			  
+        </section>
+        
+         <!-- un slide -->
+        <section>
+          <h4>Prévision Front à 12H UTC</h4>
+          <script>
+                        document.write('<img src="https://cdn.knmi.nl/knmi/map/page/weer/waarschuwingen_verwachtingen/weerkaarten/PL'+day+'12_large.gif" style="height:620px">');
+                    </script> </section>
+        <!-- un slide -->
+		<section>
+			<section>
+			  <h4>Satellite visible France</h4>
+				<script>
+				document.write('<img src="https://www.meteo60.fr/satellites/animation-satellite-visible-france.gif" style="height:620px">');
+							</script>
+			</section>
+			
+			       <!-- un slide -->
+			<section>
+			  <h4>Satellite infrarouge Europe</h4>
+			  <script>
+				document.write('<img src="https://www.meteo60.fr/satellites/animation-satellite-ir-france.gif" style="height:620px">');
+							</script>
+			</section>
+			
+			
+			<!-- un slide -->
+			<section>
+			  <h4 id="geopot">Géopotentielle à 500mb</h4>
+			  <script type="module">
+			  // Because images are dynamically returned (according to given date), a request has to be sent to load image into slides. Node of this slide was id'd to be able to insert image into the slide, instead of just replacing the whole presentation
+			  const geoResponse = await fetch("https://charts.ecmwf.int/opencharts-api/v1/products/medium-t-z/?valid_time="+ymd_velivole+"T00%3A00%3A00Z&base_time="+ymd_velivole+"T00%3A00%3A00Z&level=500", {
+				    "credentials": "omit",
+				    "headers": {
+					"Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+					"Accept-Language": "en-US,en;q=0.5",
+					"Sec-GPC": "1",
+					"Sec-Fetch-Dest": "document",
+					"Sec-Fetch-Mode": "navigate",
+					"Sec-Fetch-Site": "none",
+					"Sec-Fetch-User": "?1"
+				    },
+				    "method": "GET",
+				    "mode": "cors"
+				});
+			const geoJson = await geoResponse.json()
+		  	let node = document.getElementById('geopot')
+		  	console.log(geoJson)
+		  	node.innerHTML = 'Géopotentielle à 500mb <img src="'+geoJson.data.link.href+'" style="height:620px"></img>';
+				</script>
+			  
+			  
+			 </section>
+			<!-- un slide -->
+			<section>
+			  <h4>Radar pluie</h4>
+			  <img src="http://www.meteo60.fr/radars/animation-radar-france.gif" style="height:620px;">
+			</section>
+			
+			<section>
+			  <h4>Radar pluie</h4>
+			  <img src="http://www.meteo60.fr/radars/animation-radar-sud-ouest.gif" style="height:620px;">
+			</section>
+			
+			<section>
+			  <h4>Température à 2m</h4>
+			  <img src="http://modeles7.meteociel.fr/modeles/arome/arome-0-12-3.png" style="height:620px;">
+			</section>
+			
+		</section>
+		
+		
+        <!-- Vent Windy -->
+		<section>
+		
+			<section>
+			  <h4>Cartes Vent Sol Windy</h4>
+			  <iframe src="https://embed.windy.com/embed2.html?lat=43.775&lon=2.027&detailLat=43.775&detailLon=2.027&width=650&height=450&zoom=8&level=surface&overlay=wind&product=arome&menu=&message=true&marker=true&calendar=now&pressure=&type=map&location=coordinates&detail=&metricWind=kt&metricTemp=%C2%B0C&radarRange=-1"
+
+				  width="1024" height="578"></iframe> </section>
+				  
+			<section>
+			  <h4>Cartes Vent 900m Windy</h4>
+			  <iframe src="https://embed.windy.com/embed2.html?lat=43.775&lon=2.027&detailLat=43.775&detailLon=2.027&width=650&height=450&zoom=8&level=900h&overlay=wind&product=ecmwf&menu=&message=true&marker=true&calendar=now&pressure=&type=map&location=coordinates&detail=&metricWind=kt&metricTemp=%C2%B0C&radarRange=-1"
+
+				  width="1024" height="578"></iframe> </section>
+				  
+			<section>
+			  <h4>Cartes Vent 1500m Windy</h4>
+			  <iframe src="https://embed.windy.com/embed2.html?lat=43.775&lon=2.027&detailLat=43.775&detailLon=2.027&width=650&height=450&zoom=8&level=850h&overlay=wind&product=ecmwf&menu=&message=true&marker=true&calendar=now&pressure=&type=map&location=coordinates&detail=&metricWind=kt&metricTemp=%C2%B0C&radarRange=-1"
+
+				  width="1024" height="578"></iframe> </section>
+				  
+			<section>
+			  <h4>Cartes Vent 2000m Windy</h4>
+			  <iframe src="https://embed.windy.com/embed2.html?lat=43.775&lon=2.027&detailLat=43.775&detailLon=2.027&width=650&height=450&zoom=8&level=800h&overlay=wind&product=ecmwf&menu=&message=true&marker=true&calendar=now&pressure=&type=map&location=coordinates&detail=&metricWind=kt&metricTemp=%C2%B0C&radarRange=-1"
+
+				  width="1024" height="578"></iframe> </section>
+				  
+		</section>		
+		
+		<section>
+			<section>		
+			  <h4>Sondage AROME 00Z / Graulhet 10h Local </h4>
+				<script>
+				var dep_loc = "https://www.velivole.fr/php/emagram.php?xsize=1000&ysize=700&lat=43.7711&long=2.01083&hour=8&run=AROME/"+ymd_velivole+"T03:00:00Z&AMSL=true&lang=fr";
+				document.write('<img src=' + dep_loc + '></img>');
+				</script>
+			</section>
+			
+			<section>
+			<h4>Sondage AROME 00Z / Graulhet 11h Local </h4>
+				<script>
+				var dep_loc = "https://www.velivole.fr/php/emagram.php?xsize=1000&ysize=700&lat=43.7711&long=2.01083&hour=9&run=AROME/"+ymd_velivole+"T03:00:00Z&AMSL=true&lang=fr";
+				document.write('<img src=' + dep_loc + '></img>');
+				</script>
+			</section>
+				
+			<section>
+			  <h4>Sondage AROME 00Z / Graulhet 12h Local </h4>
+				<script>
+				var dep_loc = "https://www.velivole.fr/php/emagram.php?xsize=1000&ysize=700&lat=43.7711&long=2.01083&hour=10&run=AROME/"+ymd_velivole+"T03:00:00Z&AMSL=true&lang=fr";
+				document.write('<img src=' + dep_loc + '></img>');
+				</script>
+			</section>
+			
+			<section>
+			<h4>Sondage AROME 00Z / Graulhet 13h Local </h4>
+				<script>
+				var dep_loc = "https://www.velivole.fr/php/emagram.php?xsize=1000&ysize=700&lat=43.7711&long=2.01083&hour=11&run=AROME/"+ymd_velivole+"T03:00:00Z&AMSL=true&lang=fr";
+				document.write('<img src=' + dep_loc + '></img>');
+				</script>
+			</section>
+				
+			<section>
+			  <h4>Sondage AROME 00Z / Graulhet 14h Local </h4>
+				<script>
+				var dep_loc = "https://www.velivole.fr/php/emagram.php?xsize=1000&ysize=700&lat=43.7711&long=2.01083&hour=12&run=AROME/"+ymd_velivole+"T03:00:00Z&AMSL=true&lang=fr";
+				document.write('<img src=' + dep_loc + '></img>');
+				</script>
+			</section>
+			
+			<section>
+			<h4>Sondage AROME 00Z / Graulhet 15h Local </h4>
+				<script>
+				var dep_loc = "https://www.velivole.fr/php/emagram.php?xsize=1000&ysize=700&lat=43.7711&long=2.01083&hour=13&run=AROME/"+ymd_velivole+"T03:00:00Z&AMSL=true&lang=fr";
+				document.write('<img src=' + dep_loc + '></img>');
+				</script>
+			</section>
+
+			<section>
+			  <h4>Sondage AROME 00Z / Graulhet 16h Local </h4>
+				<script>
+				var dep_loc = "https://www.velivole.fr/php/emagram.php?xsize=1000&ysize=700&lat=43.7711&long=2.01083&hour=14&run=AROME/"+ymd_velivole+"T03:00:00Z&AMSL=true&lang=fr";
+				document.write('<img src=' + dep_loc + '></img>');
+				</script>
+			</section>
+			
+			<section>
+			<h4>Sondage AROME 00Z / Graulhet 17h Local </h4>
+				<script>
+				var dep_loc = "https://www.velivole.fr/php/emagram.php?xsize=1000&ysize=700&lat=43.7711&long=2.01083&hour=15&run=AROME/"+ymd_velivole+"T03:00:00Z&AMSL=true&lang=fr";
+				document.write('<img src=' + dep_loc + '></img>');
+				</script>
+			</section>
+				
+			<section>
+			  <h4>Sondage AROME 00Z / Graulhet 18h Local </h4>
+				<script>
+				var dep_loc = "https://www.velivole.fr/php/emagram.php?xsize=1000&ysize=700&lat=43.7711&long=2.01083&hour=16&run=AROME/"+ymd_velivole+"T03:00:00Z&AMSL=true&lang=fr";
+				document.write('<img src=' + dep_loc + '></img>');
+				</script>
+			</section>
+			
+			<section>
+			<h4>Sondage AROME 00Z / Graulhet 19h Local </h4>
+				<script>
+				var dep_loc = "https://www.velivole.fr/php/emagram.php?xsize=1000&ysize=700&lat=43.7711&long=2.01083&hour=17&run=AROME/"+ymd_velivole+"T03:00:00Z&AMSL=true&lang=fr";
+				document.write('<img src=' + dep_loc + '></img>');
+				</script>
+			</section>
+				
+			<section>
+			  <h4>Sondage AROME 00Z / Graulhet 20h Local </h4>
+				<script>
+				var dep_loc = "https://www.velivole.fr/php/emagram.php?xsize=1000&ysize=700&lat=43.7711&long=2.01083&hour=18&run=AROME/"+ymd_velivole+"T03:00:00Z&AMSL=true&lang=fr";
+				document.write('<img src=' + dep_loc + '></img>');
+				</script>
+			</section>
+			
+			<section>
+			  <h4>Sondage AROME 00Z / Graulhet 21h Local </h4>
+				<script>
+				var dep_loc = "https://www.velivole.fr/php/emagram.php?xsize=1000&ysize=700&lat=43.7711&long=2.01083&hour=19&run=AROME/"+ymd_velivole+"T03:00:00Z&AMSL=true&lang=fr";
+				document.write('<img src=' + dep_loc + '></img>');
+				</script>
+			</section>
+				
+		</section>
+		
+		
+		<!-- Meteo Parapente -->
+        <section>
+          <h4>Aérologie LFCQ (Meteo-parapente)</h4>
+          <section> <iframe src="https://meteo-parapente.com/#/43.768627,2.009470.html"
+
+              width="4000" height="560"></iframe> </section>
+        </section>
+		
+		<!-- TopMeteo -->
+        <section>
+          <h4>Top Meteo</h4>
+		  <p><a href="https://europe.topmeteo.eu/fr/fr/map/24/0/9/" onclick="window.open(this.href); return false;"
+              onkeypress="window.open(this.href); return false;">Cartes des Thermiques / Temps Significatif</a></p>			  
+		  <p><a href="https://europe.topmeteo.eu/fr/fr/map/29/0/9/" onclick="window.open(this.href); return false;"
+              onkeypress="window.open(this.href); return false;">DPV</a></p>
+          <p><a href="https://europe.topmeteo.eu/fr/fr/loc/4085/0/6/1/1/" onclick="window.open(this.href); return false;"
+              onkeypress="window.open(this.href); return false;">Prévisions Locales LFCQ</a></p>
+        </section>
+		
+		<!-- AéroWeb Id : ATVV   MdP : planeurATVV81-->
+		<section>
+			<script type="module">
+			const aeroWebResponse = await fetch("https://aviation.meteo.fr/wms/v2/auth/login/vfr/atvv/938c172a1b9f3591b4f6de04f50d5baf", {
+			    "credentials": "include",
+			    "headers": {
+			    	"Access-Control-Allow-Origin": "https://aviation.meteo.fr",
+				"Accept": "*/*",
+				"Accept-Language": "en-US,en;q=0.5",
+				"X-Requested-With": "XMLHttpRequest",
+				"Sec-GPC": "1",
+				"Sec-Fetch-Dest": "empty",
+				"Sec-Fetch-Mode": "cors",
+				"Sec-Fetch-Site": "same-origin",
+				"If-None-Match": "W/\"ae-ETw/VC1HTjWQh48thWEURLcM9WU\""
+			    },
+			    "referrer": "https://aviation.meteo.fr/accueil.php",
+			    "method": "GET",
+			    "mode": "cors"
+			});
+			let aeroWebJson = await aeroWebResponse.json()
+			console.log(aeroWebJson)
+			let aeroWebToken = aeroWebJson.token
+			</script>
+
+			
+		</section>
+
+
+		<!-- Widget de https://widget.checkwx.com/ API gratuite et clé en bas -->
+		<section>
+			<section>
+			<h2>METAR</h2>
+			<div class="checkwx-container" data-type="METAR" data-station="LFBO,LFCK"></div>
+			</section>
+			<section>
+			<h2>TAF</h2>
+			<div class="checkwx-container" data-type="TAF" data-station="LFBO,LFCK"></div>
+			</section>
+		</section>
+
+
+        <!-- un tableau des FL du jour en fonction du QNH, et en dessous la page que j'utilise pour determiner le qnh du jour, les heures de coucher du soleil etc etc -->
+        <section>
+          <section>
+            <script>
+                        function round5(x){
+                            return Math.ceil(x/5)*5;
+                        }
+            
+                        $(document).ready(function() {
+                            $("#qnh").change(function() {
+                                var qnh_value = $("#qnh").val();
+                                var mhPa = 8.5344;
+                                var pMer = 1013.25;
+                                var delta = 0;
+                                $("#qnh").val(qnh_value);
+            
+                                delta = (qnh_value - pMer) * mhPa;
+                                delta = delta.toFixed(0);
+                                $("#delta").text(delta);
+                                
+                                fl = delta*1 + 1371*1;
+                                fl = round5(fl);
+                                ;
+                                $("#fl45").text(fl);
+                                
+                                fl = delta*1 + 1676*1;
+                                fl = round5(fl);
+                                ;
+                                $("#fl55").text(fl);
+            
+                                fl = delta*1 + 1981*1;
+                                fl = round5(fl);
+                                ;
+                                $("#fl65").text(fl);
+            
+                                fl = delta*1 + 2590*1;
+                                fl = round5(fl);
+                                ;
+                                $("#fl85").text(fl);
+            
+                                fl = delta*1 + 2895*1;
+                                fl = round5(fl);
+                                ;
+                                $("#fl95").text(fl);                    
+            
+                                fl = delta*1 + 3505*1;
+                                fl = round5(fl);
+                                ;
+                                $("#fl115").text(fl);
+                                
+                                fl = delta*1 + 5943*1;
+                                fl = round5(fl);
+                                ;
+                                $("#fl195").text(fl);
+                            });
+                        });
+                    </script>
+            <h4>Table des Niveaux de Vol : saisir le QNH</h4>
+            <div class="div_qnh">
+              <div style="display:block; ">
+                <table class="alti">
+                  <tbody>
+                    <tr>
+                      <th>QNH</th>
+                      <th><input id="qnh" class="big_input_qnh" value="1013" type="text"></th>
+                      <th>FL</th>
+                      <th class="centre">Altitude du jour</th>
+                    </tr>
+                    <tr>
+                      <td><br>
+                      </td>
+                      <td><br>
+                      </td>
+                      <td>45</td>
+                      <td class="centre" id="fl45">1375</td>
+                    </tr>
+                    <tr>
+                      <td>Delta</td>
+                      <td id="delta">0</td>
+                      <td>55</td>
+                      <td class="centre" id="fl55">1680</td>
+                    </tr>
+                    <tr>
+                      <td><br>
+                      </td>
+                      <td><br>
+                      </td>
+                      <td>65</td>
+                      <td class="centre" id="fl65">1985</td>
+                    </tr>
+                    <tr>
+                      <td><br>
+                      </td>
+                      <td><br>
+                      </td>
+                      <td>85</td>
+                      <td class="centre" id="fl85">2590</td>
+                    </tr>
+                    <tr>
+                      <td><br>
+                      </td>
+                      <td><br>
+                      </td>
+                      <td>95</td>
+                      <td class="centre" id="fl95">2895</td>
+                    </tr>
+                    <tr>
+                      <td><br>
+                      </td>
+                      <td><br>
+                      </td>
+                      <td>115</td>
+                      <td class="centre" id="fl115">3505</td>
+                    </tr>
+                    <tr>
+                      <td><br>
+                      </td>
+                      <td><br>
+                      </td>
+                      <td>195</td>
+                      <td class="centre" id="fl195">5945</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+        </section>
+		
+		
+        <!-- un slide NOTAM -->
+        <section> <iframe src="http://www.notaminfo.com/francemap"
+
+            width="1024" height="768"></iframe> </section>
+			
+		<!-- un slide NOTAM -->
+        <section>
+          <h2> Consultation NOTAM :</h2>
+          <p><a href="https://sofia-briefing.aviation-civile.gouv.fr/sofia/pages/homepage.html"
+
+              onclick="window.open(this.href); return false;" onkeypress="window.open(this.href); return false;">SOFIA Briefing</a></p>
+        </section>
+        <!-- -- slide AIP ---->
+        <section>
+          <h2> Consultation SUP AIP :</h2>
+          <p><a href="https://www.sia.aviation-civile.gouv.fr/documents/supaip/aip/id/6.php"
+
+              onclick="window.open(this.href); return false;" onkeypress="window.open(this.href); return false;">SIA
+              SUP AIP</a></p>
+        </section>
+        <!-- -- slide AZBA ---->
+        <section>
+          <h2> Consultation Activité réseau Basse Altitude </h2>
+          <p><a href="https://www.sia.aviation-civile.gouv.fr/schedules" onclick="window.open(this.href); return false;"
+
+              onkeypress="window.open(this.href); return false;">SIA AZBA</a></p>
+        </section>
+		
+		<section>
+          <h2> Consultation Activité Castres LFCK </h2>
+		  <script>
+            var dep_loc = "https://wwws.airfrance.fr/flight-status/flight-list?date="+ymd+"&originAirportCode=DCM";
+            document.write('<a href="' + dep_loc + '" onclick="window.open(this.href); return false;" onkeypress="window.open(this.href); return false;" >Départs LFCK</a>');
+		</script>
+		<br>
+		<script>
+			var arr_loc = "https://wwws.airfrance.fr/flight-status/flight-list?date="+ymd+"&destinationAirportCode=DCM";
+            document.write('<a href="' + arr_loc + '" onclick="window.open(this.href); return false;" onkeypress="window.open(this.href); return false;" >Arrivées LFCK</a>');
+        </script>
+        </section>
+		
+		<section>
+          <h2> Vérification récepteurs OGN </h2>
+			<table>
+				<tbody>
+					<tr>
+						<td>LFCQ</td>
+						<td><img src="http://glidertracking.fai.org/availability.php?station=LFCQ" class="image" /></td>
+					</tr>
+					<tr>
+						<td>LFCV</td>
+						<td><img src="http://glidertracking.fai.org/availability.php?station=LFCV" class="image" /></td>
+					</tr>
+					<tr>
+						<td>Montredon</td>
+						<td><img src="http://glidertracking.fai.org/availability.php?station=Montred" class="image" /></td>
+					</tr>
+				</tbody>
+			</table>
+        </section>
+		
+		
+		<!-- La Piste -->
+		<section>
+			<section>
+				  <h1>Configuration de Piste</h1>
+				  </section>
+			<section>
+			  <h4>Mise en Piste</h4>
+			  <img src="./pic/AD_mise-en-piste.PNG"
+				  > </section> 
+			<section>
+			  <h4>Piste 09</h4>
+			  <img src="./pic/AD_10.PNG"
+				  > </section> 
+			<section>
+			  <h4>Piste 27</h4>
+			  <img src="./pic/AD_28.PNG"
+				  > </section> 
+			<section>
+			  <h4>Piste 09 avec Autan</h4>
+			  <img src="./pic/AD_10_Autan.PNG"
+				  > </section> 
+			<section>
+			  <h4>Piste 27 détrempée</h4>
+			  <img src="./pic/AD_28_marecage.PNG"
+				  > </section> 
+		</section>
+		
+        <section>
+          <h2>Bons vols</h2>
+          <img src="./pic/end/Diapositive1.jpg" style="height:400px">
+		</section>
+		
+      </div>
+    </div>
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.js"></script>
+    <script>
+
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: false,
+				history: false,
+				center: true,
+                touch: true,
+                mouseWheel: false,
+                loop: true,
+
+				transition: 'concave', // none/fade/slide/convex/concave/zoom
+
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					//{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					//{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					//{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					//{ src: 'plugin/zoom-js/zoom.js', async: true },
+					//{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/gallery/gallery.plugin.js', async: true, condition: function() { return !!document.querySelector('.gallery'); } }
+
+				]
+			});
+            //Reveal.configure({
+            //    autoSlide: 5000
+            //});
+            //Reveal.toggleAutoSlide();
+		</script>
+		<script src="https://api.checkwx.com/widget?key=2e2966723f92413999190102ec " type="text/javascript"></script>
+  </body>
+</html>
