@@ -3,7 +3,7 @@
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <title>Briefing vol planeur</title>
-    <meta name="description" content="Une collecte automatique de données météo et aéro">
+    <meta name="description" content="Une collecte automatique de donnÃ©es mÃ©tÃ©o et aÃ©ro">
     <meta name="author" content="Vincent MAILLET">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -43,7 +43,7 @@
                     var day = date.getUTCDate();
                     var month = date.getUTCMonth()+1;
                     var year = date.getUTCFullYear();
-                    // faisons en sorte que le premier janvier à 8 heures 2 minutes soit 01/01/2016 08:02, et non 1/1/2016 8:2  ;-)
+                    // faisons en sorte que le premier janvier Ã  8 heures 2 minutes soit 01/01/2016 08:02, et non 1/1/2016 8:2  ;-)
                     if(hours.toString().length==1){var zero = '0'; hours = zero.concat(hours);}
                     if(minutes.toString().length==1){var zero = '0'; minutes = zero.concat(minutes);}
                     if(seconds.toString().length==1){var zero = '0'; seconds = zero.concat(seconds);}
@@ -68,7 +68,7 @@
         
          <!-- un slide -->
         <section>
-          <h4>Prévision Front à 12H UTC</h4>
+          <h4>PrÃ©vision Front Ã  12H UTC</h4>
           <script>
                         document.write('<img src="https://cdn.knmi.nl/knmi/map/page/weer/waarschuwingen_verwachtingen/weerkaarten/PL'+day+'12_large.gif" style="height:620px">');
                     </script> </section>
@@ -84,6 +84,7 @@
 			       <!-- un slide -->
 			<section>
 			  <h4>Satellite infrarouge Europe</h4>
+        <img id="geopot" src=""></img>
 			  <script>
 				document.write('<img src="https://www.meteo60.fr/satellites/animation-satellite-ir-france.gif" style="height:620px">');
 							</script>
@@ -92,29 +93,81 @@
 			
 			<!-- un slide -->
 			<section>
-			  <h4 id="geopot">Géopotentielle à 500mb</h4>
-			  <script type="module">
-			  // Because images are dynamically returned (according to given date), a request has to be sent to load image into slides. Node of this slide was id'd to be able to insert image into the slide, instead of just replacing the whole presentation
-			  const geoResponse = await fetch("https://charts.ecmwf.int/opencharts-api/v1/products/medium-t-z/?valid_time="+ymd_velivole+"T00%3A00%3A00Z&base_time="+ymd_velivole+"T00%3A00%3A00Z&level=500", {
-				    "credentials": "omit",
-				    "headers": {
-					"Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
-					"Accept-Language": "en-US,en;q=0.5",
-					"Sec-GPC": "1",
-					"Sec-Fetch-Dest": "document",
-					"Sec-Fetch-Mode": "navigate",
-					"Sec-Fetch-Site": "none",
-					"Sec-Fetch-User": "?1"
-				    },
-				    "method": "GET",
-				    "mode": "cors"
-				});
-			const geoJson = await geoResponse.json()
-		  	let node = document.getElementById('geopot')
-		  	console.log(geoJson)
-		  	node.innerHTML = 'Géopotentielle à 500mb <img src="'+geoJson.data.link.href+'" style="height:620px"></img>';
-				</script>
-			  
+			  <h4 id="geopot">GÃ©opotentielle Ã  500mb</h4>
+          <script type="module">
+
+            // async function geoResponse(time, images) {
+            //   response = await fetch("https://charts.ecmwf.int/opencharts-api/v1/products/medium-t-z/?valid_time=" + ymd_velivole + "T" + time + "%3A00%3A00Z&base_time=" + ymd_velivole + "T00%3A00%3A00Z&level=500", {
+            //     "credentials": "omit",
+            //     "headers": {
+            //       "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+            //       "Accept-Language": "en-US,en;q=0.5",
+            //       "Sec-GPC": "1",
+            //       "Sec-Fetch-Dest": "document",
+            //       "Sec-Fetch-Mode": "navigate",
+            //       "Sec-Fetch-Site": "none",
+            //       "Sec-Fetch-User": "?1"
+            //     },
+            //     "method": "GET",
+            //     "mode": "cors"
+            //   });
+            //   const geoJson = await response.json();
+            //   console.log(geoJson.data.link.href);
+            //   images.push(geoJson.data.link.href);
+            // }
+
+            // START NAHI
+            async function geoResponse(time) {
+              let response = await fetch("https://charts.ecmwf.int/opencharts-api/v1/products/medium-t-z/?valid_time=" + ymd_velivole + "T" + time + "%3A00%3A00Z&base_time=" + ymd_velivole + "T00%3A00%3A00Z&level=500", {
+                "credentials": "omit",
+                "headers": {
+                  "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+                  "Accept-Language": "en-US,en;q=0.5",
+                  "Sec-GPC": "1",
+                  "Sec-Fetch-Dest": "document",
+                  "Sec-Fetch-Mode": "navigate",
+                  "Sec-Fetch-Site": "none",
+                  "Sec-Fetch-User": "?1"
+                },
+                "method": "GET",
+                "mode": "cors"
+              });
+              const geoJson = await response.json();
+              return geoJson.data.link.href;
+            };
+
+            async function firstFunction() {
+              var listURL = [];
+              var tempURL = "";
+              for (let time = 0; time < 24; time = time + 3) {
+                tempURL = await geoResponse(time);
+                listURL.push(tempURL);
+              }
+              return listURL;
+            };
+
+            async function secondFunction() {
+              // initialize array
+              var gifImages = await firstFunction();
+              console.log("Onto the next")
+
+              var currentFrame = 0; //Call it a frame because we're making a gif and every image (so every array index) will be a frame
+              function changePicture() {
+                document.getElementById("picture1").src = gifImages[currentFrame]; //Get the gif element and set its source to the current frame
+                currentFrame++; //Increase the current frame by 1
+                if (currentFrame >= gifImages.length) { //If we've gone past the end of our array of frames, then:
+                  currentFrame = 0; //Reset back to frame 0
+                }
+                console.log("Changed picture")
+              };
+
+              setInterval(changePicture, 2000);
+            };
+
+            await secondFunction();
+          </script>
+			  	<!--This is the image that we will change.-->
+				<img id="picture1" src="https://vignette.wikia.nocookie.net/starpolar/images/9/96/Paul_blart.jpg/revision/latest?cb=20150419171412"/>
 			  
 			 </section>
 			<!-- un slide -->
@@ -129,7 +182,7 @@
 			</section>
 			
 			<section>
-			  <h4>Température à 2m</h4>
+			  <h4>TempÃ©rature Ã  2m</h4>
 			  <img src="http://modeles7.meteociel.fr/modeles/arome/arome-0-12-3.png" style="height:620px;">
 			</section>
 			
@@ -267,7 +320,7 @@
 		
 		<!-- Meteo Parapente -->
         <section>
-          <h4>Aérologie LFCQ (Meteo-parapente)</h4>
+          <h4>AÃ©rologie LFCQ (Meteo-parapente)</h4>
           <section> <iframe src="https://meteo-parapente.com/#/43.768627,2.009470.html"
 
               width="4000" height="560"></iframe> </section>
@@ -281,39 +334,52 @@
 		  <p><a href="https://europe.topmeteo.eu/fr/fr/map/29/0/9/" onclick="window.open(this.href); return false;"
               onkeypress="window.open(this.href); return false;">DPV</a></p>
           <p><a href="https://europe.topmeteo.eu/fr/fr/loc/4085/0/6/1/1/" onclick="window.open(this.href); return false;"
-              onkeypress="window.open(this.href); return false;">Prévisions Locales LFCQ</a></p>
+              onkeypress="window.open(this.href); return false;">PrÃ©visions Locales LFCQ</a></p>
         </section>
 		
-		<!-- AéroWeb Id : ATVV   MdP : planeurATVV81-->
-		<section>
-			<script type="module">
-			const aeroWebResponse = await fetch("https://aviation.meteo.fr/wms/v2/auth/login/vfr/atvv/938c172a1b9f3591b4f6de04f50d5baf", {
-			    "credentials": "include",
-			    "headers": {
-			    	"Access-Control-Allow-Origin": "https://aviation.meteo.fr",
-				"Accept": "*/*",
-				"Accept-Language": "en-US,en;q=0.5",
-				"X-Requested-With": "XMLHttpRequest",
-				"Sec-GPC": "1",
-				"Sec-Fetch-Dest": "empty",
-				"Sec-Fetch-Mode": "cors",
-				"Sec-Fetch-Site": "same-origin",
-				"If-None-Match": "W/\"ae-ETw/VC1HTjWQh48thWEURLcM9WU\""
-			    },
-			    "referrer": "https://aviation.meteo.fr/accueil.php",
-			    "method": "GET",
-			    "mode": "cors"
-			});
-			let aeroWebJson = await aeroWebResponse.json()
-			console.log(aeroWebJson)
-			let aeroWebToken = aeroWebJson.token
-			</script>
+		<!-- AÃ©roWeb Id : ATVV   MdP : planeurATVV81-->
+    <section>
+	 <h4 id="AeroWeb">AeroWeb</h4>
+	<p><a href="https://aviation.meteo.fr/Aeroweb_maille_fine/index.html?origin=fr" onclick="window.open(this.href); return false;"
+              onkeypress="window.open(this.href); return false;">Aeroweb</a></p>
+      <script type="module">
 
-			
-		</section>
+          fetch("https://aviation.meteo.fr/ajax/login_valid.php", {
+          "headers": {
+            "accept": "*/*",
+            "accept-language": "en-GB,en-US;q=0.9,en;q=0.8",
+            "content-type": "application/x-www-form-urlencoded",
+            "sec-ch-ua": "\"Not_A Brand\";v=\"99\", \"Google Chrome\";v=\"109\", \"Chromium\";v=\"109\"",
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": "\"Windows\"",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "no-cors",
+            "sec-fetch-site": "none",
+            "x-requested-with": "XMLHttpRequest"
+          },
+          "referrer": "https://aviation.meteo.fr/login.php",
+          "referrerPolicy": "no-referrer",
+          "body": "login=ATVV&password=938c172a1b9f3591b4f6de04f50d5baf",
+          "method": "POST",
+          "mode": "no-cors",
+          "credentials": "include"
+        });
+/*          .then(function (data) {
+		 console.log()
+            let nodeAeroWeb = document.getElementById('AeroWeb');
+console.log(nodeAeroWeb)
+            nodeAeroWeb.innerHTML = "Carte des vents AeroWeb<iframe src='https://aviation.meteo.fr/Aeroweb_maille_fine/index.html?origin=fr' width='4000' height='560'> </iframe>";
+        })
+          .catch (function (ex) {
+            console.log(ex);
+        });
+*/
+      </script>
 
 
-		<!-- Widget de https://widget.checkwx.com/ API gratuite et clé en bas -->
+    </section>
+
+		<!-- Widget de https://widget.checkwx.com/ API gratuite et clÃ© en bas -->
 		<section>
 			<section>
 			<h2>METAR</h2>
@@ -478,27 +544,27 @@
         </section>
         <!-- -- slide AZBA ---->
         <section>
-          <h2> Consultation Activité réseau Basse Altitude </h2>
+          <h2> Consultation ActivitÃ© rÃ©seau Basse Altitude </h2>
           <p><a href="https://www.sia.aviation-civile.gouv.fr/schedules" onclick="window.open(this.href); return false;"
 
               onkeypress="window.open(this.href); return false;">SIA AZBA</a></p>
         </section>
 		
 		<section>
-          <h2> Consultation Activité Castres LFCK </h2>
+          <h2> Consultation ActivitÃ© Castres LFCK </h2>
 		  <script>
             var dep_loc = "https://wwws.airfrance.fr/flight-status/flight-list?date="+ymd+"&originAirportCode=DCM";
-            document.write('<a href="' + dep_loc + '" onclick="window.open(this.href); return false;" onkeypress="window.open(this.href); return false;" >Départs LFCK</a>');
+            document.write('<a href="' + dep_loc + '" onclick="window.open(this.href); return false;" onkeypress="window.open(this.href); return false;" >DÃ©parts LFCK</a>');
 		</script>
 		<br>
 		<script>
 			var arr_loc = "https://wwws.airfrance.fr/flight-status/flight-list?date="+ymd+"&destinationAirportCode=DCM";
-            document.write('<a href="' + arr_loc + '" onclick="window.open(this.href); return false;" onkeypress="window.open(this.href); return false;" >Arrivées LFCK</a>');
+            document.write('<a href="' + arr_loc + '" onclick="window.open(this.href); return false;" onkeypress="window.open(this.href); return false;" >ArrivÃ©es LFCK</a>');
         </script>
         </section>
 		
 		<section>
-          <h2> Vérification récepteurs OGN </h2>
+          <h2> VÃ©rification rÃ©cepteurs OGN </h2>
 			<table>
 				<tbody>
 					<tr>
@@ -540,7 +606,7 @@
 			  <img src="./pic/AD_10_Autan.PNG"
 				  > </section> 
 			<section>
-			  <h4>Piste 27 détrempée</h4>
+			  <h4>Piste 27 dÃ©trempÃ©e</h4>
 			  <img src="./pic/AD_28_marecage.PNG"
 				  > </section> 
 		</section>
