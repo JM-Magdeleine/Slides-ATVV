@@ -3,7 +3,7 @@
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <title>Briefing vol planeur</title>
-    <meta name="description" content="Une collecte automatique de donnÃ©es mÃ©tÃ©o et aÃ©ro">
+    <meta name="description" content="Une collecte automatique de données météo et aéro">
     <meta name="author" content="Vincent MAILLET">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -43,7 +43,7 @@
                     var day = date.getUTCDate();
                     var month = date.getUTCMonth()+1;
                     var year = date.getUTCFullYear();
-                    // faisons en sorte que le premier janvier Ã  8 heures 2 minutes soit 01/01/2016 08:02, et non 1/1/2016 8:2  ;-)
+                    // faisons en sorte que le premier janvier à 8 heures 2 minutes soit 01/01/2016 08:02, et non 1/1/2016 8:2  ;-)
                     if(hours.toString().length==1){var zero = '0'; hours = zero.concat(hours);}
                     if(minutes.toString().length==1){var zero = '0'; minutes = zero.concat(minutes);}
                     if(seconds.toString().length==1){var zero = '0'; seconds = zero.concat(seconds);}
@@ -68,7 +68,7 @@
         
          <!-- un slide -->
         <section>
-          <h4>PrÃ©vision Front Ã  12H UTC</h4>
+          <h4>Prévision Front à 12H UTC</h4>
           <script>
                         document.write('<img src="https://cdn.knmi.nl/knmi/map/page/weer/waarschuwingen_verwachtingen/weerkaarten/PL'+day+'12_large.gif" style="height:620px">');
                     </script> </section>
@@ -93,7 +93,7 @@
 			
 			<!-- un slide -->
 			<section>
-			  <h4 id="geopot">GÃ©opotentielle Ã  500mb</h4>
+			  <h4 id="geopot">Géopotentielle à 500mb</h4>
           <script type="module">
 
             // async function geoResponse(time, images) {
@@ -167,7 +167,7 @@
             await secondFunction();
           </script>
 			  	<!--This is the image that we will change.-->
-				<img id="picture1" src="https://vignette.wikia.nocookie.net/starpolar/images/9/96/Paul_blart.jpg/revision/latest?cb=20150419171412"/>
+				<img id="picture1" src="https://vignette.wikia.nocookie.net/starpolar/images/9/96/Paul_blart.jpg/revision/latest?cb=20150419171412" style="height:620px; clip: rect(0px, 0px, 2000px, 0px);"/>
 			  
 			 </section>
 			<!-- un slide -->
@@ -182,7 +182,7 @@
 			</section>
 			
 			<section>
-			  <h4>TempÃ©rature Ã  2m</h4>
+			  <h4>Température à 2m</h4>
 			  <img src="http://modeles7.meteociel.fr/modeles/arome/arome-0-12-3.png" style="height:620px;">
 			</section>
 			
@@ -320,7 +320,7 @@
 		
 		<!-- Meteo Parapente -->
         <section>
-          <h4>AÃ©rologie LFCQ (Meteo-parapente)</h4>
+          <h4>Aérologie LFCQ (Meteo-parapente)</h4>
           <section> <iframe src="https://meteo-parapente.com/#/43.768627,2.009470.html"
 
               width="4000" height="560"></iframe> </section>
@@ -334,10 +334,10 @@
 		  <p><a href="https://europe.topmeteo.eu/fr/fr/map/29/0/9/" onclick="window.open(this.href); return false;"
               onkeypress="window.open(this.href); return false;">DPV</a></p>
           <p><a href="https://europe.topmeteo.eu/fr/fr/loc/4085/0/6/1/1/" onclick="window.open(this.href); return false;"
-              onkeypress="window.open(this.href); return false;">PrÃ©visions Locales LFCQ</a></p>
+              onkeypress="window.open(this.href); return false;">Prévisions Locales LFCQ</a></p>
         </section>
 		
-		<!-- AÃ©roWeb Id : ATVV   MdP : planeurATVV81-->
+		<!-- AéroWeb Id : ATVV   MdP : planeurATVV81-->
     <section>
 	 <h4 id="AeroWeb">AeroWeb</h4>
 	<p><a href="https://aviation.meteo.fr/Aeroweb_maille_fine/index.html?origin=fr" onclick="window.open(this.href); return false;"
@@ -379,7 +379,7 @@ console.log(nodeAeroWeb)
 
     </section>
 
-		<!-- Widget de https://widget.checkwx.com/ API gratuite et clÃ© en bas -->
+		<!-- Widget de https://widget.checkwx.com/ API gratuite et clé en bas -->
 		<section>
 			<section>
 			<h2>METAR</h2>
@@ -544,27 +544,27 @@ console.log(nodeAeroWeb)
         </section>
         <!-- -- slide AZBA ---->
         <section>
-          <h2> Consultation ActivitÃ© rÃ©seau Basse Altitude </h2>
+          <h2> Consultation Activité réseau Basse Altitude </h2>
           <p><a href="https://www.sia.aviation-civile.gouv.fr/schedules" onclick="window.open(this.href); return false;"
 
               onkeypress="window.open(this.href); return false;">SIA AZBA</a></p>
         </section>
 		
 		<section>
-          <h2> Consultation ActivitÃ© Castres LFCK </h2>
+          <h2> Consultation Activité Castres LFCK </h2>
 		  <script>
             var dep_loc = "https://wwws.airfrance.fr/flight-status/flight-list?date="+ymd+"&originAirportCode=DCM";
-            document.write('<a href="' + dep_loc + '" onclick="window.open(this.href); return false;" onkeypress="window.open(this.href); return false;" >DÃ©parts LFCK</a>');
+            document.write('<a href="' + dep_loc + '" onclick="window.open(this.href); return false;" onkeypress="window.open(this.href); return false;" >Départs LFCK</a>');
 		</script>
 		<br>
 		<script>
 			var arr_loc = "https://wwws.airfrance.fr/flight-status/flight-list?date="+ymd+"&destinationAirportCode=DCM";
-            document.write('<a href="' + arr_loc + '" onclick="window.open(this.href); return false;" onkeypress="window.open(this.href); return false;" >ArrivÃ©es LFCK</a>');
+            document.write('<a href="' + arr_loc + '" onclick="window.open(this.href); return false;" onkeypress="window.open(this.href); return false;" >Arrivées LFCK</a>');
         </script>
         </section>
 		
 		<section>
-          <h2> VÃ©rification rÃ©cepteurs OGN </h2>
+          <h2> Vérification récepteurs OGN </h2>
 			<table>
 				<tbody>
 					<tr>
@@ -606,7 +606,7 @@ console.log(nodeAeroWeb)
 			  <img src="./pic/AD_10_Autan.PNG"
 				  > </section> 
 			<section>
-			  <h4>Piste 27 dÃ©trempÃ©e</h4>
+			  <h4>Piste 27 détrempée</h4>
 			  <img src="./pic/AD_28_marecage.PNG"
 				  > </section> 
 		</section>
